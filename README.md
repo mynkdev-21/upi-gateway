@@ -427,6 +427,8 @@ Webhook events:
 - `order.pending` (Sandbox)
 - `order.timeout` (Sandbox)
 
+`order.expired` is not final. A UPI QR has no expiry and a PG checkout can outlive the order, so the gateway keeps checking auto-verified orders (Paytm for Business, PhonePe PG, Paytm PG) for `GATEWAY_LATE_PAYMENT_WINDOW_HOURS` (default 24) after expiry. A late payment moves the order to `paid` and sends `order.paid`.
+
 Each webhook request includes an `X-Signature` header containing an HMAC-SHA256 signature of the raw request body.
 
 ### PHP Verification Example

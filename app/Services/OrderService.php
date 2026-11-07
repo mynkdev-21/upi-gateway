@@ -126,6 +126,73 @@ class OrderService
         return $order->refresh();
     }
 
+    /**
+     * A customer can still pay after the order expires: UPI QRs carry no expiry
+     * and PG checkout sessions may outlive the order. Ask the provider again for
+     * recently expired orders so such payments are recorded instead of lost.
+     *
+     * Checks back off as the order ages; `force` (customer returning from the
+     * PG, merchant recheck) only waits `check_interval_seconds`.
+     */
+    public function reconcileExpired(Order $order, bool $force = false): Order
+    {
+        if (! $this->acceptsLatePayment($order)) {
+            return $order;
+        }
+
+        $interval = $force
+            ? (int) config('gateway.check_interval_seconds')
+            : $this->lateCheckIntervalSeconds($order);
+
+        $claimed = Order::whereKey($order->id)
+            ->where('status', Order::EXPIRED)
+            ->where(fn ($q) => $q->whereNull('last_checked_at')
+                ->orWhere('last_checked_at', '<=', now()->subSeconds($interval)))
+            ->update(['last_checked_at' => now()]);
+
+        if (! $claimed) {
+            return $order->refresh();
+        }
+
+        $result = $order->paymentAccount->verifier()->check($order);
+
+        if ($result->paid) {
+            return $this->markPaid($order, $result->utr, $result->txnId, $result->raw, 'provider');
+        }
+
+        return $order->refresh();
+    }
+
+    /**
+     * Only live orders on providers with a status API, within the late-payment
+     * window. PG orders qualify only if the customer opened the PG checkout.
+     * Manual accounts are excluded: their late payments arrive as customer UTRs.
+     */
+    public function acceptsLatePayment(Order $order): bool
+    {
+        $window = (int) config('gateway.late_payment_window_hours', 24);
+        $account = $order->paymentAccount;
+
+        return $window > 0
+            && $order->status === Order::EXPIRED
+            && $order->environment === Order::LIVE
+            && $account !== null
+            && $account->provider !== 'manual'
+            && (! $account->isHosted() || $order->provider_checkout !== null)
+            && ($order->expires_at?->gt(now()->subHours($window)) ?? false);
+    }
+
+    private function lateCheckIntervalSeconds(Order $order): int
+    {
+        $minutesSinceExpiry = (int) abs($order->expires_at->diffInMinutes(now()));
+
+        return match (true) {
+            $minutesSinceExpiry < 60 => 300,
+            $minutesSinceExpiry < 360 => 1800,
+            default => 7200,
+        };
+    }
+
     public function markPaid(Order $order, ?string $utr, ?string $txnId, array $raw, string $verifiedBy): Order
     {
         try {

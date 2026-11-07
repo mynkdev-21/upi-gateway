@@ -79,6 +79,10 @@ class OrderController extends Controller
         $this->authorizeOwnerOnly($request, $order);
         $order = $this->orders->check($order);
 
+        if ($order->status === Order::EXPIRED) {
+            $order = $this->orders->reconcileExpired($order, force: true);
+        }
+
         return back()->with('status', "Status: {$order->status}");
     }
 

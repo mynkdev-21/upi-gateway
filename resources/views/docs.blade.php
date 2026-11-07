@@ -262,7 +262,7 @@ Content-Type: application/json"])
                         'paid'    => ['Payment confirmed. The utr field contains the bank reference.', 'bg-emerald-50 border-emerald-200'],
                         'review'  => ['A customer-submitted UTR is awaiting merchant review (Live only).', 'bg-blue-50 border-blue-200'],
                         'failed'  => ['The TEST payment was simulated as failed (Sandbox only).', 'bg-red-50 border-red-200'],
-                        'expired' => ['Order was not paid before expires_at.', 'bg-slate-50 border-slate-200'],
+                        'expired' => ['Order was not paid before expires_at. Not final: a late payment is still detected for 24 hours and moves it to paid.', 'bg-slate-50 border-slate-200'],
                     ] as $s => [$d, $cls])
                         <div class="rounded-xl border {{ $cls }} p-4">
                             <x-status :status="$s" />
@@ -332,7 +332,7 @@ Content-Type: application/json"])
                         <tbody class="divide-y divide-slate-50">
                             @foreach ([
                                 ['order.paid', 'emerald', 'Payment confirmed. Safe to fulfil the order.'],
-                                ['order.expired', 'slate', 'Order was not paid before it expired.'],
+                                ['order.expired', 'slate', 'Order was not paid before it expired. An order.paid may still follow if the customer pays late.'],
                                 ['order.under_review', 'blue', 'A Live UTR submission needs merchant review.'],
                                 ['order.failed', 'red', 'Sandbox failure simulation.'],
                                 ['order.pending', 'amber', 'Sandbox pending simulation.'],

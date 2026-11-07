@@ -7,6 +7,11 @@ return [
     // Minimum seconds between two provider status checks for the same order.
     'check_interval_seconds' => 3,
 
+    // Hours after expiry during which auto-verified orders are still re-checked,
+    // because a customer can pay a UPI QR or PG checkout after the order expires.
+    // 0 disables late-payment reconciliation.
+    'late_payment_window_hours' => (int) env('GATEWAY_LATE_PAYMENT_WINDOW_HOURS', 24),
+
     // Unofficial Paytm for Business status endpoint. It may change without notice.
     'paytm_status_url' => env('PAYTM_STATUS_URL', 'https://securegw.paytm.in/merchant-status/getTxnStatus'),
 

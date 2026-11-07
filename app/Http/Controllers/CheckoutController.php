@@ -132,6 +132,11 @@ class CheckoutController extends Controller
         $this->assertLive($order);
         $order = $this->orders->check($order->load('paymentAccount'), force: true);
 
+        // The PG session can outlive the order, so the customer may have paid late.
+        if ($order->status === Order::EXPIRED) {
+            $order = $this->orders->reconcileExpired($order->load('paymentAccount'), force: true);
+        }
+
         if ($order->status === Order::PAID && $order->redirect_url) {
             $redirectUrl = $this->redirectUrl($order);
             if ($redirectUrl !== null) {
