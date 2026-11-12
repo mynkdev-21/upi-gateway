@@ -39,11 +39,6 @@ Every contribution is genuinely appreciated. Thank you for being part of this jo
   **UPI ID:** `6388401024@digikhata`
 </p>
 
-<p align="center">
-  <a href="upi://pay?pa=6388401024%40digikhata&pn=Mayank%20Singh&cu=INR&tn=Support%20Open%20Source">
-    <img src="https://img.shields.io/badge/💚_Support_My_Work-Pay_with_UPI-16A34A?style=for-the-badge" alt="Pay with UPI"/>
-  </a>
-</p>
 
 <p align="center">
   <sub>Scan the QR code or click the button to donate using your preferred UPI app.</sub>
