@@ -23,6 +23,22 @@
 
 ---
 
+<p align="center">
+  <img src="./screenshots/donation_upi_qr.jpeg" width="220" alt="UPI Donation QR Code">
+</p>
+
+<p align="center">
+  <b>UPI ID:</b> 6388401024@digikhata
+</p>
+
+<p align="center">
+  <a href="upi://pay?pa=6388401024@digikhata&cu=INR">
+    ❤️ Support via UPI
+  </a>
+</p>
+
+---
+
 ## <img src="docs/icons/rocket.svg" width="18" height="18" alt=""/> Quick Installation
 
 UPI Gateway includes a browser-based installer. For a hosting-server installation, use the prepared production package: it includes the production `vendor/` dependencies and compiled frontend assets, so **SSH, Composer, Node.js, and npm are not required on the hosting server**.
