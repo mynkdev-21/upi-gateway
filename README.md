@@ -23,19 +23,33 @@
 
 ---
 
+## ❤️ Support My Work
+
+If you find my projects useful, enjoy using my work, or appreciate the time and effort behind these open-source contributions, consider supporting me with a small donation.
+
+Your support, no matter how small, motivates me to keep building, maintaining, and improving open-source projects and creating more useful tools for the developer community.
+
+Every contribution is genuinely appreciated. Thank you for being part of this journey!
+
 <p align="center">
-  <img src="./screenshots/donation_upi_qr.jpeg" width="220" alt="UPI Donation QR Code">
+  <img src="./screenshots/donation_upi_qr.jpeg" width="200" alt="UPI Donation QR Code"/>
 </p>
 
 <p align="center">
-  <b>UPI ID:</b> 6388401024@digikhata
+  **UPI ID:** `6388401024@digikhata`
 </p>
 
 <p align="center">
-  <a href="upi://pay?pa=6388401024@digikhata&cu=INR">
-    ❤️ Support via UPI
+  <a href="upi://pay?pa=6388401024%40digikhata&pn=Mayank%20Singh&cu=INR&tn=Support%20Open%20Source">
+    <img src="https://img.shields.io/badge/💚_Support_My_Work-Pay_with_UPI-16A34A?style=for-the-badge" alt="Pay with UPI"/>
   </a>
 </p>
+
+<p align="center">
+  <sub>Scan the QR code or click the button to donate using your preferred UPI app.</sub>
+</p>
+
+**Thank you for supporting independent developers and open source!** 🙌
 
 ---
 
