@@ -401,8 +401,11 @@ class InstallationManager
         }
         $stat = @stat($path);
 
-        return $stat !== false && ($stat['mode'] & 0777) === 0600
-            && (! function_exists('posix_geteuid') || $stat['uid'] === posix_geteuid());
+        return $stat !== false && (
+            PHP_OS_FAMILY === 'Windows'
+            || (($stat['mode'] & 0777) === 0600
+                && (! function_exists('posix_geteuid') || $stat['uid'] === posix_geteuid()))
+        );
     }
 
     public function setupTokenPath(): string
